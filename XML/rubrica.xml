@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE Rubrica SYSTEM "rubrica.dtd"> -->
+
+<!DOCTYPE Rubrica
+[ 
+<!ELEMENT Rubrica (nome,cognome,numero_cell,email,nickname,nascita)>
+<!ELEMENT nome (#PCDATA)>
+<!ELEMENT cognome (#PCDATA)>
+<!ELEMENT numero_cell (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT nickname (#PCDATA)>
+<!ELEMENT nascita (#PCDATA)>
+<!ATTLIST nascita day CDATA #REQUIRED>
+<!ATTLIST nascita month CDATA #REQUIRED>
+<!ATTLIST nascita year CDATA #REQUIRED>
+]>
+
+<Rubrica>
+	
+	<elemento>
+		<nome> Daniel</nome>
+		<cognome>Andoniu</cognome>
+		<numero_cell>123456789</numero_cell>
+		<email>daniel.andoniu@gmail.com</email>
+		<nickname>Dani</nickname>
+		<nascita day="17" month="12" year="2001"/>
+	</elemento>
+	
+	<elemento>
+		<nome> Basso </nome>
+		<cognome>Nicola</cognome>
+		<numero_cell>78452121</numero_cell>
+		<nickname>Nicki</nickname>
+		<nascita day="13" month="3" year="1999"/>
+	</elemento>
+	
+	<elemento>
+		<nome>Bernardi</nome>
+		<cognome>Riccardo</cognome>
+		<numero_cell>55558565</numero_cell>
+		<nickname>Berna</nickname>
+		<email>bernardi.riccardo@gmail.com</email>
+	</elemento>
+
+</Rubrica>
