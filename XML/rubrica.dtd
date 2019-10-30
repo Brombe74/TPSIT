@@ -1,0 +1,13 @@
+<!DOCTYPE Rubrica
+[ 
+<!ELEMENT Rubrica (nome,cognome,numero_cell,email,nickname,nascita)>
+<!ELEMENT nome (#PCDATA)>
+<!ELEMENT cognome (#PCDATA)>
+<!ELEMENT numero_cell (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT nickname (#PCDATA)>
+<!ELEMENT nascita (day,month,year)>
+	<!ELEMENT day (#PCDATA)>
+	<!ELEMENT month (#PCDATA)>
+	<!ELEMENT year (#PCDATA)>
+]>
