@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <sys/times.h>
@@ -15,10 +16,12 @@
 
 void chiusura_forzata (int chiudi)
 {
-	if(chiudi == EOF)
+	if(chiudi == SIGINT)
 	{
-		printf("EOF RICEVUTO");
-		exit(0);
+		//printf("EOF RICEVUTO");
+		write(0, "\nEOF RICEVUTO\n", 16);
+		
+		exit(chiudi);
 	}
 }
 
@@ -29,7 +32,7 @@ void CharMaiuscola(int i, int o)
 	
 	while((len = recv(i, &ch, 1, 0)) > 0) //Riceve un carattere
 	{
-		chiusura_forzata(len);
+		//chiusura_forzata(len);
 		
 		chMaiu = toupper(ch);
 		asciiVal = (unsigned int)ch;
@@ -46,6 +49,9 @@ int main (unsigned argc, char **argv) {
   struct sockaddr_in servizio,cliente;   //  record con gli indirizzi 
                                          //  del server  e del client
                                          
+	signal(SIGINT, chiusura_forzata);
+	
+                                         
   /* impostazione del transport endpoint */
   printf ("socket()\n");
   if((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
@@ -54,7 +60,7 @@ int main (unsigned argc, char **argv) {
     return(1);
   }
   /* indicando INADDR_ANY viene collegato il socket all'indirizzo locale IP     */
-  /* dell'interaccia di rete che verr� utilizzata per inoltrare il datagram IP  */
+  /* dell'interaccia di rete che verra' utilizzata per inoltrare il datagram IP  */
   servizio.sin_family = AF_INET;
   servizio.sin_addr.s_addr = htonl(INADDR_ANY);
   servizio.sin_port = htons(SERVER_PORT);
@@ -86,6 +92,7 @@ int main (unsigned argc, char **argv) {
   send(fd, "Hello al ServerMaiu: trasformo caratteri in mauscolo!\n", 56, 0);
   CharMaiuscola(fd,fd);
   close(fd);
+  close(socketfd);
   fprintf(stderr, "Chiusa connessione col server.\n");  // echo nelclient 
   }
 }  
