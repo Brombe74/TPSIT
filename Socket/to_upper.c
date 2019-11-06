@@ -89,7 +89,7 @@ int main (unsigned argc, char **argv) {
     
   /* inizio dialogo tra server e client */  
   fprintf(stderr, "Aperta connessione col server.\n");  // echo nel client
-  send(fd, "Hello al ServerMaiu: trasformo caratteri in mauscolo!\n", 56, 0);
+  //send(fd, "Hello al ServerMaiu: trasformo caratteri in mauscolo!\n", 56, 0);
   CharMaiuscola(fd,fd);
   close(fd);
   close(socketfd);

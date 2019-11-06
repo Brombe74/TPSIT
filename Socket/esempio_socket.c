@@ -17,7 +17,7 @@ struct socket_addr
 };
 */
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	
 	int clientLen; //dimensione del client address
