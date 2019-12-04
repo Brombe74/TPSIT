@@ -26,41 +26,7 @@ void chiusura(int signo)
 	exit(EXIT_SUCCESS);
 }
 
-/*
-#define	critical 5
-#define	error 4	
-#define	warning 3
-#define	notice 2
-#define	info 1
-int dbcurrent=4;
-* 
-* void printdebug(char[] stringa,int error)
-* {
-* 	if(error>=debugcurrent)
-* 	{
-* 		printf();
-* 	}
-* 
-* }
-* 
-* void setleveldebug()
-* {
-* 	do
-* 	{
-* 		scanf("%d",&dbcurrent);
-* 	}while(dbcurrent<1 || dbcurren>5);
-* }
-* 
-* void pushleveldebug()
-* {
-* 
-* }
-* 
-* void resetleveldebug()
-* {
-* 
-* }
-*/
+
 int main(int argc, char **argv)
 {
 	//gestione segnali
@@ -71,7 +37,7 @@ int main(int argc, char **argv)
 	
 	struct sockaddr_in server,client;
 	char indirizzoServer[] = "127.0.0.1";     // indirizzo del server 
-	int server_socketfd, clinet_socketfd;
+	int server_socketfd, client_socketfd;
 	char Buffer[100];
 	unsigned int client_len;
 	pid_t pid;
@@ -108,14 +74,36 @@ int main(int argc, char **argv)
 		client_len=sizeof (client);
 		if((client_socketfd=accept(server_socketfd, (struct sockaddr*)&client, &client_len))<0)
 			{
-				fprintf(stderr, "ERRORE NELL'ACCETTA");
+				fprintf(stderr, "ERRORE NELL'ACCE");
 				fflush(stderr);
 				exit(1);
 			}
+			
 	pid=fork();
+	
+	if(pid<0)
+	{
+		fprintf(stderr, "Errore nella creazione del fork");
+		fflush(stderr);
+		exit(1);
 	}
 	
-	// richiesta di connessione al server   
+	else if(pid==0)
+	{
+			//gestione webserver
+		if(Buffer=receive(server_socketfd, (struct sockaddr*)&client, &client_len)<0)
+		{
+			fprintf(stderr,"Errore nella ricezione del messaggio");
+			fflush(stderr);	
+			exit(1);
+		}
+			
+			printf("%s",Buffer);
+	}
+
+	}
+	
+	/*// richiesta di connessione al server   
 	printf("connect()\n");
 	if (connect(server_socketfd, (struct sockaddr*) &client, sizeof(client)) == SOCKET_ERROR)
 	{
@@ -124,8 +112,7 @@ int main(int argc, char **argv)
 		return(4);
 	}
 	
-	
-	//gestione webserver
+	*/
 	return 0;
 	
 	
