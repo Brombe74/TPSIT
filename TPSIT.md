@@ -1,7 +1,7 @@
 ---
 title: TPSIT
 created: '2019-11-12T08:54:57.011Z'
-modified: '2019-11-20T10:04:59.626Z'
+modified: '2020-01-07T08:54:26.889Z'
 ---
 
 # TPSIT
@@ -27,7 +27,82 @@ top, semiautomatico e mostra i processi che usano più memoria
 
 
 
-######
+### 26/11/2019
+**Webserver in C**
 
-####### 
+Possibile libreria di debug personale
+
+#define	critical 5
+#define	error 4	
+#define	warning 3
+#define	notice 2
+#define	info 1
+int dbcurrent=4;
+* 
+* void printdebug(char[] stringa,int error)
+  {
+  	if(error>=debugcurrent)
+  	{
+  		printf();
+   	}
+
+   }
+
+* void setleveldebug()
+   {
+   	do
+  	{
+  		scanf("%d",&dbcurrent);
+  	}while(dbcurrent<1 || dbcurrent>5);
+  }
+ 
+* void pushleveldebug()
+  {
+ 
+  }
+
+* void resetleveldebug()
+  {
+
+  }
+* void push unsetdebuglv()
+  {
+
+  }
+
+
+
+#### 11/12/2019
+
+*ripasso*
+Netcat si occupa dei livelli 1-2-3-4
+Il nostro programma del 5-6-7 
+Con apache arriveremo fino a metà livello 5
+
+#### 7/01/2020
+
+**Abilitare CGI**
+
+sudo a2enmod cgi
+
+cd /etc/apache2/sites-available
+nano 000-default.conf
+
+decommentare inclde cdi-bin
+restartare: sudo service apache2 restart
+
+
+in /usr/lib/cgi-bin
+nano getdata.sh
+
+
+#!/bin/bash
+
+echo '<!DOCTYPE html>'
+echo '<html><title>Data</title>'
+echo '<body><h1>Today is: '
+date
+echo '</h1></body>'
+echo '</html>'
+
 
