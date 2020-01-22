@@ -45,7 +45,7 @@ public class ClientStr
 
     public void comunica() 
     {
-		Runtime.getRuntime().addShutdownHook(new Thread()) 
+		Runtime.getRuntime().addShutdownHook(new Thread() 
 		{
             @Override
             public void run()
@@ -53,10 +53,17 @@ public class ClientStr
 				//chiudo la connessione
 				System.out.println("\nGestione del CTRL+C...");
 				System.out.println("CLIENT: termina elaborazione e chiude connessione");
-				miosocket.close();
-             
+				try
+				{
+					miosocket.close();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return;
+				}
             }
-        };
+        });
         try
         {
 			while(true)

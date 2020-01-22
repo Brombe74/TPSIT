@@ -66,6 +66,7 @@ public class ServerStr
            //termina elaborazione sul server : chiudo la connessione del client
             System.out.println("SERVER: fine elaborazione ...");
             client.close();
+            System.exit(0);
         } 
         
         catch(Exception e)
@@ -78,19 +79,20 @@ public class ServerStr
     {
 		
 		//gestione del CTRL+C
-		Runtime.getRuntime().addShutdownHook(new Thread()) 
+		Runtime.getRuntime().addShutdownHook(new Thread() 
 		{
             @Override
             public void run()
             {
                 System.out.println("\nGestione del CTRL+C...");
             }
-        };
+        });
 
         ServerStr servente = new ServerStr();
+        servente.attendi();
+        
         while(true)
         {
-            servente.attendi();
             servente.comunica();
         }
     }
