@@ -1,4 +1,4 @@
-import java.io.*;
+/*import java.io.*;
 import java.net.*;
 import java.util.*;
 
@@ -38,4 +38,49 @@ public class Multiserver
 		
 	}
 }
+*/
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
+
+public class Multiserver implements Runnable 
+{
+   Socket csocket;
+   public static int c;
+   Multiserver(Socket csocket) 
+   {
+      this.csocket = csocket;
+   }
+   
+   public static void main(String args[]) throws Exception
+   { 
+      ServerSocket ssock = new ServerSocket(1234);
+      System.out.println("In ascolto");
+      
+      while (true) 
+      {
+         Socket sock = ssock.accept();
+         c++;
+         System.out.println("Connesso il "+c+"° client\n Informazioni client "+sock);
+         new Thread(new Multiserver(sock)).start();
+      }
+   }
+   public void run() 
+   {
+      try 
+      {
+         PrintStream pstream = new PrintStream(csocket.getOutputStream());
+        
+            pstream.println(" Benvenuto nel Multiserver OwO\n WIP");
+         
+         pstream.close();
+         csocket.close();
+      }
+      catch (IOException e)
+      {
+         System.out.println(e);
+      }
+   }
+}
