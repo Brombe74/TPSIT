@@ -1,8 +1,6 @@
 /*import java.io.*;
 import java.net.*;
 import java.util.*;
-
-
 public class Multiserver
 {	
 	ServerSocket server = null;
@@ -11,11 +9,9 @@ public class Multiserver
     String stringaModificata = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
-
 	public Socket attendi()
     {
         int porta = 6789;
-
         try
         {
             System.out.println("SERVER partito in esecuzione ...");
@@ -43,13 +39,15 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.*;
 
 
 public class Multiserver implements Runnable 
 {
    Socket csocket;
    public static int c;
-   Multiserver(Socket csocket) 
+   
+   public Multiserver(Socket csocket) 
    {
       this.csocket = csocket;
    }
@@ -70,10 +68,14 @@ public class Multiserver implements Runnable
    public void run() 
    {
       try 
-      {
+      {	
+		 Scanner input= new Scanner(System.in);
+		 String mes= new String();
          PrintStream pstream = new PrintStream(csocket.getOutputStream());
         
-            pstream.println(" Benvenuto nel Multiserver OwO\n WIP");
+            pstream.println("Benvenuto nel Multiserver\n WIP");
+            pstream.println("Inserisci il messaggio che vuoi inviare al server");
+            mes=input.nextLine();
          
          pstream.close();
          csocket.close();
