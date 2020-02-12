@@ -12,9 +12,8 @@ public class Chat
 		server.run();
 		
 		
-		clientObjct client = new clientObjct();
-		//BufferedReader input=new BufferedReader(new InputStreamReader(System.in));
-		//InetAddress IPserver=InetAddress.getByName("172.30.4.255");
+		ClientChat client = new ClientChat("172.30.4.255",porta);
+		client.run();
 		
 	}
 }
@@ -86,17 +85,85 @@ class ServerChat implements Runnable
 	
 }
 
-class clientObjct implements Runnable
+class ClientChat implements Runnable
+{
+	private int porta;
+	private InetAddress IPserver;
+	
+	public ClientChat(String IP,int portaserver)
+	{
+		try
+		{
+			IPserver=InetAddress.getByName(IP);
+			this.porta=portaserver;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public void run()
+	{
+		BufferedReader input=new BufferedReader(new InputStreamReader(System.in));
+		byte[] bufferIN=new byte[1024];
+		byte[] bufferOUT=new byte[1024];
+		String idinit=new String("<id value=12> <msg> ");
+		String idfine=new String(" </msg> </id>");
+		String iddef=new String();
+		DatagramSocket clientSocket=null;
+		
+		try
+		{
+			clientSocket= new DatagramSocket();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		System.out.println("Inserisci il tuo messaggio");
+		
+		try
+		{
+			iddef= input.readLine();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		idinit=idinit.concat(iddef);
+		idinit=idinit.concat(idfine);
+		
+		bufferOUT=idinit.getBytes();
+		
+		DatagramPacket sendPacket=new DatagramPacket(bufferOUT,bufferOUT.length,this.IPserver,this.porta);
+		
+		try
+		{
+			clientSocket.send(sendPacket);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		clientSocket.close();
+		
+	}
+}
+	
+
+
+class clientObjct
 {
 	private int id;
 	private int timeout;
-	private String msg;
 	private int porta;
 	
 	public clientObjct()
 	{
 		this.id=0;
-		this.msg=new String("");
 		this.porta=8080;
 		this.timeout=30;
 	}
@@ -105,7 +172,6 @@ class clientObjct implements Runnable
 	{
 		this.id=id;
 		this.porta=porta;
-		this.msg=new String(" ");
 		this.timeout=30;
 	}
 	public void run()
