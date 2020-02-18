@@ -8,12 +8,12 @@ public class Chat
 	public static void main (String args[]) throws Exception
 	{
 		
-		ServerChat server = new ServerChat(porta);
-		server.run();
+		Runnable server = new ServerChat(porta);
+		new Thread(server).start();
 		
 		
-		ClientChat client = new ClientChat("172.30.4.255",porta);
-		client.run();
+		Runnable client = new ClientChat("172.30.4.255",porta);
+		new Thread(client).start();
 		
 	}
 }
@@ -60,19 +60,22 @@ class ServerChat implements Runnable
 				ricevuto= new String(receivePacket.getData());
 				int numCaratteri=receivePacket.getLength();
 				System.out.println("Ricevuta la stringa: "+ricevuto);
+				ricevuto="";
 				InetAddress IPClient=receivePacket.getAddress();
 				int portaClient=receivePacket.getPort();
 			
-				String daSpedire=ricevuto.toUpperCase();
+		/*		String daSpedire=ricevuto.toUpperCase();
 				bufferOUT=daSpedire.getBytes();
 			
 				DatagramPacket sendPacket=new DatagramPacket(bufferOUT, bufferOUT.length,IPClient,portaClient);
 				serverSocket.send(sendPacket);
+		*/
 			}
 			catch(Exception e)
 			{
 				System.out.println(e);
 			}
+			
 			
 			//cotnrollo termine esecuzione del server
 			if(ricevuto.equals("fine"))
@@ -110,8 +113,9 @@ class ClientChat implements Runnable
 		byte[] bufferOUT=new byte[1024];
 		String idinit=new String("<id value=12> <msg> ");
 		String idfine=new String(" </msg> </id>");
-		String iddef=new String();
+		String iddef=new String(" ");
 		DatagramSocket clientSocket=null;
+		boolean attivo=true;
 		
 		try
 		{
@@ -121,33 +125,41 @@ class ClientChat implements Runnable
 		{
 			System.out.println(e);
 		}
-		System.out.println("Inserisci il tuo messaggio");
 		
-		try
+		while(attivo)
 		{
-			iddef= input.readLine();
+			
+			System.out.println("Inserisci il tuo messaggio");
+		
+			try
+			{
+				iddef= input.readLine();
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+		
+			idinit=idinit.concat(iddef);
+			idinit=idinit.concat(idfine);
+		
+			bufferOUT=idinit.getBytes();
+		
+			DatagramPacket sendPacket=new DatagramPacket(bufferOUT,bufferOUT.length,this.IPserver,this.porta);
+			
+		
+			try
+			{
+				clientSocket.send(sendPacket);
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+			bufferOUT=null;
+			bufferIN=null;
+			iddef=" ";
 		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-		
-		idinit=idinit.concat(iddef);
-		idinit=idinit.concat(idfine);
-		
-		bufferOUT=idinit.getBytes();
-		
-		DatagramPacket sendPacket=new DatagramPacket(bufferOUT,bufferOUT.length,this.IPserver,this.porta);
-		
-		try
-		{
-			clientSocket.send(sendPacket);
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-		
 		clientSocket.close();
 		
 	}
